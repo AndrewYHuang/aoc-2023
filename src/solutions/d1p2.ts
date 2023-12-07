@@ -26,27 +26,6 @@ function sum(p: number, c: number) {
   return p + c;
 }
 
-function addNNumbers(n: number) {
-  return function (numbers: number[]) {
-    let agg = 0
-    for(let i = 0; i < n; i++) {
-      agg += numbers[i]
-    }
-    return agg
-  }
-}
-
-function matchWord(word: string) {
-  return function (a: string) {
-    return a === word
-  }
-}
-
-function main() {
-  const words = ["a"]
-  words.filter(matchWord("Apple"))
-}
-
 export default function d1p2() {
   const answer = readInput().map(input => {
     const merged = addVector(parseTextDigits(input), onlyDigits(input));
