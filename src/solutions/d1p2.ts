@@ -29,7 +29,9 @@ function sum(p: number, c: number) {
 export default function d1p2() {
   const answer = readInput().map(input => {
     const merged = addVector(parseTextDigits(input), onlyDigits(input));
-    const filtered = merged.filter((x) => x !== undefined).map(x => x!.toString())
+    const filtered = merged
+      .filter((x) => x !== undefined)
+      .map(x => x!.toString())
     const calibrated = calibrationValue(filtered)
     return calibrated
   }).reduce(sum)
