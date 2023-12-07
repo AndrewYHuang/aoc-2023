@@ -14,9 +14,7 @@ function readInputLines() {
 
 function parseGame(line: string): Game {
   const match = /Game (?<id>[0-9]+):(?<gameString>.*)/g.exec(line)
-  const { id, gameString } = match?.groups ?? (() => {
-    throw new Error(`no match on line: ${ line }`)
-  })();
+  const { id, gameString } = match?.groups ?? (() => { throw new Error(`no match on line: ${ line }`) })();
   const turns = gameString.split(';').map(parseTurn)
   return { id, turns }
 }
@@ -27,20 +25,32 @@ function parseTurn(turn: string): Turn {
   return { red, green, blue }
 }
 
-function isValidGame(game: Game) {
-  return !game.turns.find(isInvalidTurn)
+function max(a: number, b: number) {
+  return a > b ? a : b
 }
 
-function isInvalidTurn(turn: Turn) {
-  return turn.red > 12 || turn.green > 13 || turn.blue > 14 
+function turnVectorMax(a: Turn, b: Turn) {
+  return {
+    red: max(a.red, b.red),
+    green: max(a.green, b.green),
+    blue: max(a.blue, b.blue),
+  }
+}
+
+function gameMaxCubes({turns}: Game) {
+  return turns.reduce(turnVectorMax)
+}
+
+function powerSet(a: Turn) {
+  return a.red * a.green * a.blue
 }
 
 function sum(a: number, b: number) { return a + b }
 
 function solution() {
   const games = readInputLines().map(parseGame)
-  const possibleGames = games.filter(isValidGame)
-  return possibleGames.map(game => parseInt(game.id)).reduce(sum)
+  const minCubes = games.map(gameMaxCubes)
+  return minCubes.map(powerSet).reduce(sum)
 }
 
 export default solution
